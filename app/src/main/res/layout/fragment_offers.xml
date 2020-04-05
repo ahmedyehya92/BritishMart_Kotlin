@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        tools:context=".ui.fragments.offers.OffersFragment"
+        >
+<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        tools:context=".ui.fragments.offers.OffersFragment"
+        android:orientation="vertical"
+        android:background="@color/colorWhite">
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+            android:background="@color/colorredMain"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:textColor="@color/white"
+            android:text="Offers"
+            android:gravity="center"
+            android:textSize="18sp"
+
+            />
+
+        <ImageView
+            android:id="@+id/im_grid_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/icon_grid_selected"
+            android:layout_centerVertical="true"
+            android:visibility="gone"
+
+            />
+
+        <ImageView
+            android:id="@+id/im_list_icon"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@id/im_grid_icon"
+            android:layout_centerVertical="true"
+            android:src="@drawable/icon_list_normal"
+            android:layout_marginEnd="8dp"
+            />
+
+    </RelativeLayout>
+
+    <com.netservex.caf.customviews.CustomRecyclerView
+        android:id="@+id/offers_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+            app:layoutManager="android.support.v7.widget.StaggeredGridLayoutManager"
+            app:spanCount="1"
+            />
+</LinearLayout>
+    <RelativeLayout
+            android:id="@+id/lout_loading_interval_view_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+    </RelativeLayout>
+</RelativeLayout>

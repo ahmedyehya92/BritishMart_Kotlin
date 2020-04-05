@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        >
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="F"
+    android:background="#ffffff"
+    android:orientation="vertical"
+    >
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:textColor="@color/colorredMain"
+        android:text="Sub Category Name"
+        android:gravity="center_vertical"
+        android:textSize="18sp"
+
+        />
+
+        <ImageView
+            android:id="@+id/im_grid_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/icon_grid_selected"
+            android:layout_centerVertical="true"
+
+            />
+
+        <ImageView
+            android:id="@+id/im_list_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@id/im_grid_icon"
+            android:layout_centerVertical="true"
+            android:src="@drawable/icon_list_normal"
+            android:layout_marginEnd="8dp"
+            />
+
+    </RelativeLayout>
+
+    <com.netservex.caf.customviews.CustomRecyclerView
+        android:id="@+id/products_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>
+    <RelativeLayout
+            android:id="@+id/lout_loading_interval_view_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+    </RelativeLayout>
+</RelativeLayout>

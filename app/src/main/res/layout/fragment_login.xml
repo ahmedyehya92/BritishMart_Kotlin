@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/colorWhite"
+    tools:context=".ui.fragments.LoginFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/email_password"
+        android:layout_marginTop="32dp"
+        />
+
+    <ImageView
+        android:id="@+id/btn_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/login"
+        android:layout_marginTop="32dp"
+        />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/facebook"
+        android:layout_marginTop="32dp"
+        />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/google"
+        android:layout_marginTop="8dp"
+        />
+
+    <ImageView
+        android:id="@+id/new_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/new_account"
+        android:layout_marginTop="32dp"
+        />
+    <ImageView
+        android:id="@+id/btn_forget_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/forget_password"
+        android:layout_marginTop="8dp"
+        />
+
+
+
+</LinearLayout>
