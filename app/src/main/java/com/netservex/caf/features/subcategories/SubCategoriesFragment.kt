@@ -7,6 +7,7 @@ import android.os.Handler
 import android.os.Looper
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.StaggeredGridLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,24 +17,26 @@ import com.netservex.caf.core.PaginationStaggardScrollListener
 import com.netservex.caf.core.RequestIntervalHandler2
 import com.netservex.caf.features.base.BaseFragment
 import com.netservex.caf.features.products_list.FragmentProductsList
-import com.netservex.entities.CategoryModel
 import com.netservex.entities.SUBCATEGORY_DATA_TYPE
+import com.netservex.entities.SubCategoryModel
 import kotlinx.android.synthetic.main.fragment_sub_categories.*
 
 class SubCategoriesFragment : BaseFragment(), SubCategoriesView,
     SubcategoriesAdapter.customButtonListener, PaginationAdapterCallBack {
     // TODO: Rename and change types of parameters
     private var categoryId: String? = null
+    private var categoryName: String? = null
     var adapter: SubcategoriesAdapter? = null
     var staggeredGridLayoutManager: StaggeredGridLayoutManager? = null
     private var isLoadingV: Boolean = false
     private var isLastPageV: Boolean = false
     private var TOTAL_PAGES: Int = 50
+    private val TAG = this::class.java.simpleName
     var linearLayoutManager: LinearLayoutManager? = null
     // limiting to 5 for this tutorial, since total pages in actual API is very large. Feel free to modify.
     val totalPageCount = 20
     private var currentPage = PAGE_START
-    private var arrayList: ArrayList<CategoryModel>? = null
+    private var arrayList: ArrayList<SubCategoryModel>? = null
     var handler: Handler? = null
     private lateinit var requestIntervalHandler: RequestIntervalHandler2
 
@@ -51,6 +54,7 @@ class SubCategoriesFragment : BaseFragment(), SubCategoriesView,
         super.onCreate(savedInstanceState)
         if (getArguments() != null) {
             categoryId = getArguments()!!.getString(ARG_PARAM_CATEGORY_ID)
+            categoryName = arguments?.getString(ARG_PARAM_CATEGORY_NAME)
         }
         handler = Handler(Looper.getMainLooper())
 
@@ -63,7 +67,7 @@ class SubCategoriesFragment : BaseFragment(), SubCategoriesView,
         val rootView: View =
             inflater.inflate(R.layout.fragment_sub_categories, container, false)
 
-        arrayList = ArrayList<CategoryModel>()
+        arrayList = ArrayList()
         return rootView
     }
 
@@ -74,6 +78,7 @@ class SubCategoriesFragment : BaseFragment(), SubCategoriesView,
         requestIntervalHandler.tryAgainTrigger.observe(this, tryAgainTriggerObserever)
         requestIntervalHandler.setMessageErrorTextColor(R.color.colorredMain)
 
+        tv_category_name.text = categoryName
 
         linearLayoutManager = LinearLayoutManager(getContext())
         staggeredGridLayoutManager =
@@ -102,7 +107,9 @@ class SubCategoriesFragment : BaseFragment(), SubCategoriesView,
         populatRecyclerView()
         implementScrolListener()
         currentPage = PAGE_START
-        categoryId?.let { presenter?.getSubCategories(currentPage, it) }
+        categoryId?.let {
+            Log.d(TAG, "category id = $categoryId")
+            presenter?.getSubCategories(currentPage, it) }
         super.onViewCreated(view, savedInstanceState)
     }
 
@@ -134,7 +141,7 @@ class SubCategoriesFragment : BaseFragment(), SubCategoriesView,
         })
     }
 
-    override fun addSubCategories(subCategories: MutableList<CategoryModel>) {
+    override fun addSubCategories(subCategories: MutableList<SubCategoryModel>) {
         adapter!!.addAll(subCategories)
     }
 
@@ -175,7 +182,7 @@ class SubCategoriesFragment : BaseFragment(), SubCategoriesView,
         requestIntervalHandler.finishLoading()
     }
 
-    override fun connectionError() {
+    override fun connectionError(message: String?) {
         requestIntervalHandler.showErrorView("error connection, try again!")
     }
 
@@ -194,22 +201,29 @@ class SubCategoriesFragment : BaseFragment(), SubCategoriesView,
         // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
         private const val ARG_PARAM_CATEGORY_ID = "ARG_PARAM_CATEGORY_ID"
+        private const val ARG_PARAM_CATEGORY_NAME = "ARG_PARAM_CATEGORY_NAME"
         private const val PAGE_START = 1
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
          *
-         * @param param1 Parameter 1.
+         * @param categoryId Parameter 1.
          * @param param2 Parameter 2.
          * @return A new instance of fragment SubCategoriesFragment.
          */
 // TODO: Rename and change types and number of parameters
-        fun newInstance(param1: String?): SubCategoriesFragment {
+        fun newInstance(categoryId: String?, categoryName: String?): SubCategoriesFragment {
             val fragment = SubCategoriesFragment()
             val args = Bundle()
-            args.putString(ARG_PARAM_CATEGORY_ID, param1)
+            args.putString(ARG_PARAM_CATEGORY_ID, categoryId)
+            args.putString(ARG_PARAM_CATEGORY_NAME, categoryName)
             fragment.setArguments(args)
             return fragment
         }
+    }
+
+    override fun onDestroy() {
+        presenter.onDestroy(this)
+        super.onDestroy()
     }
 }

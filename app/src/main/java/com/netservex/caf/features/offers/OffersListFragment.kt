@@ -149,7 +149,7 @@ class OffersListFragment : BaseFragment(), OffersListView,
         requestIntervalHandler.finishLoading()
     }
 
-    override fun connectionError() {
+    override fun connectionError(message: String?) {
         requestIntervalHandler.showErrorView("error connection, try again!")
     }
     override fun faildLoading(message: Any) {

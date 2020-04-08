@@ -121,7 +121,7 @@ class MainActivity : BaseActivity(), MenueDialogFragment.CustomButtonListener {
             }
         } else getSupportFragmentManager().beginTransaction().add(
             R.id.main_fragment_container,
-            SubCategoriesFragment.newInstance(itemId),
+            SubCategoriesFragment.newInstance(itemId, title),
             "subcategories_fragment"
         ).addToBackStack(null).commit()
     }

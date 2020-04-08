@@ -47,6 +47,12 @@ interface DutchMartApis {
     @GET("categories")
     fun getCategories(): Single<ResponseGetCategories>
 
+    @GET("subcategories/{category_id}")
+    fun getSubCategories(@Path("category_id") categoryId: String, @Query("p") page: Int): Single<ResponseGetSubCategories>
+
+    @GET("categoryproducts/{category_id}")
+    fun getProductsOfCategory(@Path("category_id") categoryId: String, @Query("p") page: Int): Single<ResponseGetCategoryProducts>
+
 
 }
 

@@ -3,6 +3,6 @@ package com.netservex.caf.core
 interface LoadingHandler {
     fun showLoading()
     fun finishLoading()
-    fun connectionError()
+    fun connectionError(message: String?="")
     fun faildLoading(message: Any)
 }

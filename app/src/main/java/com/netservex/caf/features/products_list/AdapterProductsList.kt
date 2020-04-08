@@ -95,14 +95,14 @@ class AdapterProductsList(
                     holder as SubCategoryViewHolder
 
                 Glide.with(context)
-                    .load(model.imgUrl)
+                    .load(model.image)
                     .into(subCategoryViewHolder.img_desc)
 
-                subCategoryViewHolder.tv_title?.text = model.title
+                subCategoryViewHolder.tv_title?.text = model.name
                 subCategoryViewHolder.lout_container!!.setOnClickListener {
                     customListener!!.onItemClickListner(
                         model.id,
-                        model.title
+                        model.name
                     )
                 }
             }

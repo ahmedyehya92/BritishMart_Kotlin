@@ -24,6 +24,8 @@ interface Repository {
     fun getRefreshToken(): String
     fun setRefreshToken(refreshToken: String)
     fun getCategories(): Single<ResponseGetCategories>
+    fun getSubCategories(categoryId: String, page: Int): Single<ResponseGetSubCategories>
+    fun getCategoryProducts(categoryId: String, page: Int): Single<ResponseGetCategoryProducts>
 }
 
 class RepositoryImplementer (
@@ -37,6 +39,11 @@ class RepositoryImplementer (
     }
 
     override fun getCategories(): Single<ResponseGetCategories> = server.getCategories()
+    override fun getSubCategories(categoryId: String, page: Int): Single<ResponseGetSubCategories> = server.getSubCategories(categoryId, page)
+    override fun getCategoryProducts(
+        categoryId: String,
+        page: Int
+    ): Single<ResponseGetCategoryProducts> = server.getProductsOfCategory(categoryId, page)
 
     override fun getRefreshToken(): String {
         return preferencesHelper.refreshToken

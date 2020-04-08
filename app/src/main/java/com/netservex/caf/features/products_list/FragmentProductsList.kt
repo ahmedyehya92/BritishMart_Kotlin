@@ -172,7 +172,7 @@ class FragmentProductsList : BaseFragment(), ProductsListView,
         requestIntervalHandler.finishLoading()
     }
 
-    override fun connectionError() {
+    override fun connectionError(message: String?) {
         requestIntervalHandler.showErrorView("error connection, try again!")
     }
 
@@ -208,5 +208,10 @@ class FragmentProductsList : BaseFragment(), ProductsListView,
             fragment.setArguments(args)
             return fragment
         }
+    }
+
+    override fun onDestroy() {
+        presenter.onDestroy(this)
+        super.onDestroy()
     }
 }

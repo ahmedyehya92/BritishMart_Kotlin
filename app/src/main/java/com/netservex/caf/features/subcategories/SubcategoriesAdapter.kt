@@ -12,15 +12,16 @@ import com.bumptech.glide.Glide
 import com.netservex.caf.R
 import com.netservex.caf.core.PaginationAdapterCallBack
 import com.netservex.entities.CategoryModel
+import com.netservex.entities.SubCategoryModel
 import com.wang.avi.AVLoadingIndicatorView
 import java.util.*
 
 class SubcategoriesAdapter(
     private val context: Context,
-    arrayList: ArrayList<CategoryModel>?, dataType: Int
+    arrayList: ArrayList<SubCategoryModel>?, dataType: Int
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder?>() {
-    private val arrayList: MutableList<CategoryModel>?
+    private val arrayList: MutableList<SubCategoryModel>?
     private val dataType: Int
     private var customListener: customButtonListener? = null
     private var isLoadingAdded = false
@@ -35,18 +36,18 @@ class SubcategoriesAdapter(
         return if (position == arrayList!!.size - 1 && isLoadingAdded) LOADING else ITEM
     }
 
-    fun add(r: CategoryModel) {
+    fun add(r: SubCategoryModel) {
         arrayList!!.add(r)
         notifyItemInserted(arrayList.size - 1)
     }
 
-    fun addAll(opResults: MutableList<CategoryModel>) {
+    fun addAll(opResults: MutableList<SubCategoryModel>) {
         for (result in opResults) {
             add(result)
         }
     }
 
-    fun remove(r: CategoryModel?) {
+    fun remove(r: SubCategoryModel?) {
         val position = arrayList!!.indexOf(r)
         if (position > -1) {
             arrayList.removeAt(position)
@@ -61,7 +62,7 @@ class SubcategoriesAdapter(
         }
     }
 
-    fun getItem(position: Int): CategoryModel {
+    fun getItem(position: Int): SubCategoryModel {
         return arrayList!![position]
     }
 
@@ -77,7 +78,7 @@ class SubcategoriesAdapter(
     fun removeLoadingFooter() {
         isLoadingAdded = false
         val position = arrayList!!.size - 1
-        val result: CategoryModel = getItem(position)
+        val result: SubCategoryModel = getItem(position)
         if (result != null) {
             arrayList.removeAt(position)
             notifyItemRemoved(position)
@@ -85,7 +86,7 @@ class SubcategoriesAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val model: CategoryModel = arrayList!![position]
+        val model: SubCategoryModel = arrayList!![position]
         when (getItemViewType(position)) {
             ITEM -> {
                 val subCategoryViewHolder =

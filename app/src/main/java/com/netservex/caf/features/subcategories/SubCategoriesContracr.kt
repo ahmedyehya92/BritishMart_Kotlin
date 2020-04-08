@@ -1,10 +1,12 @@
 package com.netservex.caf.features.subcategories
 
+import android.arch.lifecycle.DefaultLifecycleObserver
 import com.netservex.caf.core.LoadingHandler
 import com.netservex.entities.CategoryModel
+import com.netservex.entities.SubCategoryModel
 
 interface SubCategoriesView: LoadingHandler {
-    fun addSubCategories(requests: MutableList<CategoryModel>)
+    fun addSubCategories(requests: MutableList<SubCategoryModel>)
     fun setLastPageTrue()
     fun addLoadingFooter()
     fun removeLoadingFooter()
@@ -13,6 +15,6 @@ interface SubCategoriesView: LoadingHandler {
     fun showEmptyViewForList()
 }
 
-interface SubCategoriesPresenter {
+interface SubCategoriesPresenter: DefaultLifecycleObserver {
     fun getSubCategories(page: Int, categoryId: String)
 }

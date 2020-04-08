@@ -1,5 +1,6 @@
 package com.netservex.caf.features.products_list
 
+import android.arch.lifecycle.DefaultLifecycleObserver
 import com.netservex.caf.core.LoadingHandler
 import com.netservex.entities.ProductModel
 
@@ -13,6 +14,6 @@ interface ProductsListView: LoadingHandler {
     fun showEmptyViewForList()
 }
 
-interface ProductsListPresenter {
+interface ProductsListPresenter: DefaultLifecycleObserver {
     fun getProductsList(page: Int, categoryId: String)
 }

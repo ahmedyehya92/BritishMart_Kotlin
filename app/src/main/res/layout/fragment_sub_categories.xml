@@ -25,12 +25,14 @@
         android:paddingEnd="8dp"
         >
         <TextView
+                android:id="@+id/tv_category_name"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:textColor="@color/colorredMain"
             android:text="Category Name"
             android:gravity="center_vertical"
             android:textSize="18sp"
+                android:layout_toStartOf="@id/im_list_icon"
 
             />
 

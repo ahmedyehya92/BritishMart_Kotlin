@@ -1,47 +1,82 @@
 package com.netservex.caf.features.subcategories
 
+import android.arch.lifecycle.LifecycleOwner
 import android.util.Log
 import com.netservex.entities.CategoryModel
+import com.netservex.usecases.usecases.GetSubCategoriesUseCase
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import java.util.*
 
 class SubCategoriesImplPresenter (
     private val view: SubCategoriesView,
-    private var pageSc: Int = 0
+    private var pageSc: Int = 0,
+    private val getSubCategoriesUseCase: GetSubCategoriesUseCase = GetSubCategoriesUseCase(),
+    private val disposables: CompositeDisposable = CompositeDisposable()
 ): SubCategoriesPresenter {
+    private val TAG = this::class.java.simpleName
     override fun getSubCategories(page: Int, categoryId: String) {
+
         this.pageSc = page
+
         if (page == 1)
             view.showLoading()
 
-
-
-        if (pageSc != 1) {
-            view.removeLoadingFooter()
-            view.setIsLoadingFalse()
-            Log.d("", "page not equal 1: ")
-        }
-
-        if (pageSc != 1 && testListShouldReplacedWithCallUseCase().size == 0) run {
-            view.setLastPageTrue()
-            view.removeLoadingFooter()
-            Log.d("", "last page")
-            Log.d("", "page: " + pageSc)
-
-        }
-        else
-            run {
-
-                if (pageSc == 1) {
-                    if (testListShouldReplacedWithCallUseCase().size == 0)
-                        view.showEmptyViewForList()
-                    else
-                        view.finishLoading()
+        getSubCategoriesUseCase(categoryId, page)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                if (pageSc != 1) {
+                    view.removeLoadingFooter()
+                    view.setIsLoadingFalse()
+                    Log.d("", "page not equal 1: ")
                 }
-                view.addSubCategories(testListShouldReplacedWithCallUseCase())
-                /*if (it.pagination.pageCount > 1)
-                    view.addLoadingFooter()
-                 */
-            }
+
+                if (pageSc != 1 && it.subcategories.size == 0) run {
+                    view.setLastPageTrue()
+                    view.removeLoadingFooter()
+                    Log.d("", "last page")
+                    Log.d("", "page: " + pageSc)
+
+                }
+                else
+                    run {
+                        Log.d(TAG, "page: " + pageSc)
+                        Log.e(TAG,"getSubCategories -> error message = ${it.toString()}")
+
+                        if (pageSc == 1) {
+                            if (it.subcategories.size == 0)
+                                view.showEmptyViewForList()
+                            else
+                                view.finishLoading()
+                        }
+                        view.addSubCategories(it.subcategories)
+                        /*if (it.pagination.pageCount > 1)
+                            view.addLoadingFooter()
+                         */
+                    }
+
+              /*  run {
+                    Log.d(TAG, "page: " + pageSc)
+                    Log.e(TAG,"getSubCategories -> error message = ${it.toString()}")
+
+                    if (pageSc == 1) {
+                        if (it.subcategories.size == 0)
+                            view.showEmptyViewForList()
+                        else
+                            view.finishLoading()
+
+                        view.addSubCategories(it.subcategories)
+                    }
+                }*/
+
+            },{
+                Log.e(TAG,"getSubCategories -> error message = ${it.message}")
+                view.connectionError()
+            })
+            .also { disposables.add(it) }
+
 
     }
 
@@ -94,4 +129,9 @@ class SubCategoriesImplPresenter (
 
         return list
     }
+
+    override fun onDestroy(owner: LifecycleOwner) {
+        disposables.dispose()
+    }
+
 }

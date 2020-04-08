@@ -93,7 +93,7 @@ class CategoriesFragment : BaseFragment(), CategoriesView,
     }
 
     override fun onItemNewsClickListner(title: String?, id: String?) {
-        activity?.getSupportFragmentManager()?.beginTransaction()?.add(R.id.main_fragment_container, SubCategoriesFragment.newInstance("1"), "")?.addToBackStack(null)?.commit()
+        activity?.getSupportFragmentManager()?.beginTransaction()?.add(R.id.main_fragment_container, SubCategoriesFragment.newInstance(id, title), "")?.addToBackStack(null)?.commit()
     }
 
     override fun showLoading() {

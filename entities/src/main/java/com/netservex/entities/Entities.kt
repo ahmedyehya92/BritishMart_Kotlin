@@ -53,17 +53,36 @@ data class CategoryModel(
     val im: Bitmap? = null
 )
 
+data class ResponseGetSubCategories(
+    val subcategories: MutableList<SubCategoryModel>
+)
 
 data class SubCategoryModel(
-    var title: String? = null,
+    var name: String? = null,
     val id: String? = null,
-    val imgUrl: String? = null
+    val image: String? = null
+)
+
+data class ResponseGetCategoryProducts(
+    val categoryproducts: MutableList<ProductModel>
 )
 
 data class ProductModel(
-    var title: String? = null,
+    var name: String? = null,
     val id: String? = null,
-    val imgUrl: String? = null
+    val image: String? = null,
+    val categoryid: String?,
+    val category: String?,
+    val intro: String?,
+    val details: String?,
+    val price: String?,
+    val oprice: String?,
+    val offer_start_date: String?,
+    val offer_start_time: String?,
+    val offer_end_date: String?,
+    val offer_end_time: String?,
+    val discount_percentage: String?,
+    val gallery: MutableList<Any?>?
 )
 
 data class OfferModel(
