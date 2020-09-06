@@ -11,7 +11,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:paddingBottom="50dp"
-                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/view_item_cart"
                     tools:itemCount="5"
                 />
@@ -23,5 +23,13 @@
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         />
+
+    <RelativeLayout
+            android:id="@+id/lout_loading_interval_view_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+    </RelativeLayout>
 
 </RelativeLayout>

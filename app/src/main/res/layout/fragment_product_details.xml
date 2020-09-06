@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.fragments.ProductDetailsFragment"
     >
 
 
 
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -32,6 +36,7 @@
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:layout_margin="10dp"
+                android:textColor="@color/black"
             android:text="Product Name"
             />
 
@@ -42,7 +47,7 @@
             android:orientation="horizontal"
             >
 
-            <android.support.v7.widget.CardView
+            <androidx.cardview.widget.CardView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -51,12 +56,12 @@
                 app:cardCornerRadius="5dp"
                 >
                 <ImageView
+                        android:id="@+id/im_product"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/flat_food_test"
                     android:scaleType="centerCrop"
                     />
-            </android.support.v7.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
 
 
@@ -69,9 +74,10 @@
                 >
 
                 <TextView
+                        android:id="@+id/tv_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="300"
+                    android:text="0"
                     android:fontFamily="monospace"
                     android:textSize="19sp"
                     android:textColor="@color/colorBlack"
@@ -83,13 +89,14 @@
                     android:fontFamily="monospace"
                     android:textSize="19sp"
                     android:textColor="@color/colorBlack"
-                    android:text="USD"
+                    android:text="EUR"
                     />
 
                 <ImageView
+                        android:id="@+id/icon_like"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/icon_like_normal"
+                    app:srcCompat="@drawable/favarite_icon_selector"
                     android:layout_marginTop="10dp"
                     />
 
@@ -105,7 +112,7 @@
         </LinearLayout>
 
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -113,7 +120,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:padding="10dp"
                 >
@@ -127,17 +134,18 @@
                     android:textStyle="bold"
                     />
 
-                <TextView
+                <WebView
+                        android:id="@+id/tv_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Wealth Maximization through bringing in the various investments under one organization to put together the individual expertise and interest as the common goal. Wealth Maximization through bringing in the various investments under one organization to put together the individual expertise and interest as the common goal. Wealth Maximization through bringing in the various investments under one organization to put together the individual expertise and interest as the common goal. Wealth Maximization through bringing in the various investments under one organization to put together the individual expertise and interest as the common goal. Wealth Maximization through bringing in the various investments under one organization to put together the individual expertise and interest as the common goal. Wealth Maximization through bringing in the various investments under one organization to put together the individual expertise and interest as the common goal."
+                    tools:text="Wealth Maximization through bringing in the various investments under one organization to put together the individual expertise and interest as the common goal. Wealth Maximization through bringing in the various investments under one organization to put together the individual expertise and interest as the common goal. Wealth Maximization through bringing in the various investments under one organization to put together the individual expertise and interest as the common goal. Wealth Maximization through bringing in the various investments under one organization to put together the individual expertise and interest as the common goal. Wealth Maximization through bringing in the various investments under one organization to put together the individual expertise and interest as the common goal. Wealth Maximization through bringing in the various investments under one organization to put together the individual expertise and interest as the common goal."
                     />
 
             </LinearLayout>
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
 
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -149,6 +157,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="10dp"
+                    android:visibility="gone"
                 >
 
                 <TextView
@@ -161,13 +170,15 @@
                     />
 
                 <TextView
+                        android:id="@+id/tv_type"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Material : Khoos \nSize: 30cm"
+                        android:textColor="@color/black"
+                    tools:text="Material : Khoos \nSize: 30cm"
                     />
 
             </LinearLayout>
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
 
 
@@ -175,11 +186,21 @@
 
 
 
-</android.support.v4.widget.NestedScrollView>
+</androidx.core.widget.NestedScrollView>
     <include
         layout="@layout/view_add_to_cart_fixed_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         />
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <RelativeLayout
+            android:id="@+id/lout_loading_interval_view_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+    </RelativeLayout>
+
+</RelativeLayout>

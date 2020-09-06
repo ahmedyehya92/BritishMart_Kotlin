@@ -1,7 +1,7 @@
 package com.netservex.usecases.database
 
-import android.arch.persistence.room.Database
-import android.arch.persistence.room.RoomDatabase
+import androidx.room.Database
+import androidx.room.RoomDatabase
 import com.netservex.entities.SeatDB
 import com.netservex.usecases.applicationLiveData
 import com.netservex.usecases.getApplication

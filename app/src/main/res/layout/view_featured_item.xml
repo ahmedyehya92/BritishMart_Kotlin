@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_margin="10dp"
+        android:id="@+id/lout_main"
+        >
+
+    <ImageView
+            android:id="@+id/im_product"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/im_subcat_o_test"
+            />
+
+
+    <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cosmogfgdfgfdgfvfgfgdfg"
+            android:textSize="16sp"
+            android:layout_marginStart="16dp"
+            android:maxLines="2"
+            android:ellipsize="end"
+
+            />
+
+</LinearLayout>

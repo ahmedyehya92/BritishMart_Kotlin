@@ -1,10 +1,10 @@
 package com.netservex.caf.core
 
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.StaggeredGridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
-abstract class PaginationStaggardScrollListener(internal var layoutManager: StaggeredGridLayoutManager) :
-    RecyclerView.OnScrollListener() {
+abstract class PaginationStaggardScrollListener(internal var layoutManager: androidx.recyclerview.widget.StaggeredGridLayoutManager) :
+    androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
     private var pastVisibleItems: Int = 0
     private var visibleItemCount: Int = 0
     private var totalItemCount: Int = 0
@@ -15,7 +15,7 @@ abstract class PaginationStaggardScrollListener(internal var layoutManager: Stag
 
     abstract val isLoading: Boolean
 
-    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+    override fun onScrolled(recyclerView: androidx.recyclerview.widget.RecyclerView, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)
         visibleItemCount = layoutManager.childCount
         totalItemCount = layoutManager.itemCount

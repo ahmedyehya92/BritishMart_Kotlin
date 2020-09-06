@@ -1,6 +1,6 @@
 package com.netservex.usecases.database
 
-import android.arch.persistence.room.Room
+import androidx.room.Room
 import android.content.Context
 
 private const val DATABASE_NAME = "CafDatabaseGateway.db"

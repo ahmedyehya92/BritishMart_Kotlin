@@ -1,12 +1,13 @@
 package com.netservex.caf.features.products_list
 
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.StaggeredGridLayoutManager
+import android.util.Log
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,12 +26,13 @@ class FragmentProductsList : BaseFragment(), ProductsListView,
     AdapterProductsList.customButtonListener, PaginationAdapterCallBack {
     // TODO: Rename and change types of parameters
     private var subCategoryId: String? = null
+    private var subCategoryName: String? = null
     var adapter: AdapterProductsList? = null
-    var staggeredGridLayoutManager: StaggeredGridLayoutManager? = null
+    var staggeredGridLayoutManager: androidx.recyclerview.widget.StaggeredGridLayoutManager? = null
     private var isLoadingV: Boolean = false
     private var isLastPageV: Boolean = false
     private var TOTAL_PAGES: Int = 50
-    var linearLayoutManager: LinearLayoutManager? = null
+    var linearLayoutManager: androidx.recyclerview.widget.LinearLayoutManager? = null
     private lateinit var requestIntervalHandler: RequestIntervalHandler2
     // limiting to 5 for this tutorial, since total pages in actual API is very large. Feel free to modify.
     val totalPageCount = 20
@@ -49,6 +51,7 @@ class FragmentProductsList : BaseFragment(), ProductsListView,
         super.onCreate(savedInstanceState)
         if (getArguments() != null) {
             subCategoryId = getArguments()!!.getString(ARG_PARAM_SUB_CATEGORY_ID)
+            subCategoryName = getArguments()!!.getString(ARG_PARAM_SUB_CATEGORY_NAME)
         }
         handler = Handler(Looper.getMainLooper())
 
@@ -67,17 +70,26 @@ class FragmentProductsList : BaseFragment(), ProductsListView,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        tv_subcategory_name.text = subCategoryName
+
         requestIntervalHandler =
             RequestIntervalHandler2(lout_loading_interval_view_container, context!!, false)
         requestIntervalHandler.tryAgainTrigger.observe(this, tryAgainTriggerObserever)
         requestIntervalHandler.setMessageErrorTextColor(R.color.colorredMain)
 
-        linearLayoutManager = LinearLayoutManager(getContext())
+        linearLayoutManager =
+            androidx.recyclerview.widget.LinearLayoutManager(getContext())
         staggeredGridLayoutManager =
-            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+            androidx.recyclerview.widget.StaggeredGridLayoutManager(
+                2,
+                androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL
+            )
         im_list_icon.setOnClickListener {
             staggeredGridLayoutManager =
-                StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
+                androidx.recyclerview.widget.StaggeredGridLayoutManager(
+                    1,
+                    androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL
+                )
             products_list.setLayoutManager(staggeredGridLayoutManager)
             //adapter!!.notifyDataSetChanged()
             im_list_icon.setImageResource(R.drawable.icon_list_selected)
@@ -85,7 +97,10 @@ class FragmentProductsList : BaseFragment(), ProductsListView,
         }
         im_grid_icon.setOnClickListener {
             staggeredGridLayoutManager =
-                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+                androidx.recyclerview.widget.StaggeredGridLayoutManager(
+                    2,
+                    androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL
+                )
             products_list.setLayoutManager(staggeredGridLayoutManager)
             //adapter!!.notifyDataSetChanged()
             im_grid_icon.setImageResource(R.drawable.icon_grid_selected)
@@ -179,8 +194,9 @@ class FragmentProductsList : BaseFragment(), ProductsListView,
     override fun faildLoading(message: Any) {
     }
 
-    override fun onItemClickListner(id: String?, title: String?) {
-        getFragmentManager()?.beginTransaction()?.add(R.id.main_fragment_container, ProductDetailsFragment(), "")?.addToBackStack("")?.commit()
+    override fun onItemClickListner(productModel: ProductModel) {
+        Log.e("TAG","price= ${productModel.price}")
+        getFragmentManager()?.beginTransaction()?.add(R.id.main_fragment_container, ProductDetailsFragment.newInstance(productModel), "")?.addToBackStack("")?.commit()
     }
 
     override fun retryPageLoad() {
@@ -191,6 +207,7 @@ class FragmentProductsList : BaseFragment(), ProductsListView,
         // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
         private const val ARG_PARAM_SUB_CATEGORY_ID = "ARG_PARAM_CATEGORY_ID"
+        private const val ARG_PARAM_SUB_CATEGORY_NAME = "ARG_PARAM_SUB_CATEGORY_NAME"
         private const val PAGE_START = 1
         /**
          * Use this factory method to create a new instance of
@@ -201,9 +218,10 @@ class FragmentProductsList : BaseFragment(), ProductsListView,
          * @return A new instance of fragment SubCategoriesFragment.
          */
 // TODO: Rename and change types and number of parameters
-        fun newInstance(subCategoryId: String?): FragmentProductsList {
+        fun newInstance(subCategoryId: String?, subCategoryName: String?): FragmentProductsList {
             val fragment = FragmentProductsList()
             val args = Bundle()
+            args.putString(ARG_PARAM_SUB_CATEGORY_ID, subCategoryId)
             args.putString(ARG_PARAM_SUB_CATEGORY_ID, subCategoryId)
             fragment.setArguments(args)
             return fragment

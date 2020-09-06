@@ -3,10 +3,7 @@ package com.netservex.usecases.usecases
 import android.annotation.SuppressLint
 import android.util.Log
 import com.google.gson.JsonParser
-import com.netservex.entities.ERRORCONNECTION
-import com.netservex.entities.ERRORFROMSERVER
-import com.netservex.entities.ERRORUNKNOWN
-import com.netservex.entities.LoginResponse
+import com.netservex.entities.*
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -38,7 +35,7 @@ abstract class TokenHelper (private val tokenUseCase: TokenUseCase = TokenUseCas
 
     }
 
-    private fun handleLoginResponse(response: LoginResponse)
+    private fun handleLoginResponse(response: ResponseLogin)
     {
         /* when(response.status)
          {
@@ -51,7 +48,7 @@ abstract class TokenHelper (private val tokenUseCase: TokenUseCase = TokenUseCas
 
 
 
-        tokenUseCase.token = response.token
+        tokenUseCase.token = response.access_token
 
         Log.i("", "token: " + tokenUseCase.token )
 

@@ -1,6 +1,6 @@
 package com.netservex.caf.features.subcategories
 
-import android.arch.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.DefaultLifecycleObserver
 import com.netservex.caf.core.LoadingHandler
 import com.netservex.entities.CategoryModel
 import com.netservex.entities.SubCategoryModel

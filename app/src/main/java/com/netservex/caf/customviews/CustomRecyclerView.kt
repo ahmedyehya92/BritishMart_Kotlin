@@ -1,13 +1,13 @@
 package com.netservex.caf.customviews
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.util.AttributeSet
 import android.view.View
 
-class CustomRecyclerView : RecyclerView {
+class CustomRecyclerView : androidx.recyclerview.widget.RecyclerView {
     private var mEmptyView: View? = null
-    internal val observer: RecyclerView.AdapterDataObserver = object : RecyclerView.AdapterDataObserver() {
+    internal val observer: androidx.recyclerview.widget.RecyclerView.AdapterDataObserver = object : androidx.recyclerview.widget.RecyclerView.AdapterDataObserver() {
         override fun onChanged() {
             super.onChanged()
             initEmptyView()
@@ -36,7 +36,7 @@ class CustomRecyclerView : RecyclerView {
         }
     }
 
-    override fun setAdapter(adapter: RecyclerView.Adapter<*>?) {
+    override fun setAdapter(adapter: androidx.recyclerview.widget.RecyclerView.Adapter<*>?) {
         val oldAdapter = getAdapter()
         super.setAdapter(adapter)
         oldAdapter?.unregisterAdapterDataObserver(observer)

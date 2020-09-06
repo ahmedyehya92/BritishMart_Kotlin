@@ -3,6 +3,7 @@
 
     <string name="font_name_helvatica">Helvetica</string>
     <string name="fon_Helvetica_Oblique">Helvetica-Oblique</string>
+    <string name="font_name_SF_Pro_Display_Regular">SF_Pro_Display_Regular</string>
     <string name="menu_item_search_event">Search Event</string>
     <string name="menu_item_go_backend">Go Backend</string>
     <string name="menu_item_logout">Logout</string>

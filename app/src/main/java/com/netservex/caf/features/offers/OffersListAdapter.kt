@@ -2,27 +2,29 @@ package com.netservex.caf.features.offers
 
 import android.content.Context
 import android.os.Handler
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.StaggeredGridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
+import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.netservex.caf.R
 import com.netservex.caf.core.PaginationAdapterCallBack
 import com.netservex.entities.OfferModel
+import com.netservex.entities.ProductModel
 import com.wang.avi.AVLoadingIndicatorView
 import java.util.ArrayList
 
 class OffersListAdapter(
     private val context: Context,
-    arrayList: ArrayList<OfferModel>?, dataType: Int
+    arrayList: ArrayList<ProductModel>?, dataType: Int
 ) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder?>() {
-    private val arrayList: MutableList<OfferModel>?
+    androidx.recyclerview.widget.RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder?>() {
+    private val arrayList: MutableList<ProductModel>?
     private val dataType: Int
     private var customListener: customButtonListener? = null
     private var isLoadingAdded = false
@@ -37,18 +39,18 @@ class OffersListAdapter(
         return if (position == arrayList!!.size - 1 && isLoadingAdded) LOADING else ITEM
     }
 
-    fun add(r: OfferModel) {
+    fun add(r: ProductModel) {
         arrayList!!.add(r)
         notifyItemInserted(arrayList.size - 1)
     }
 
-    fun addAll(opResults: MutableList<OfferModel>) {
+    fun addAll(opResults: MutableList<ProductModel>) {
         for (result in opResults) {
             add(result)
         }
     }
 
-    fun remove(r: OfferModel?) {
+    fun remove(r: ProductModel?) {
         val position = arrayList!!.indexOf(r)
         if (position > -1) {
             arrayList.removeAt(position)
@@ -63,7 +65,7 @@ class OffersListAdapter(
         }
     }
 
-    fun getItem(position: Int): OfferModel {
+    fun getItem(position: Int): ProductModel {
         return arrayList!![position]
     }
 
@@ -77,38 +79,42 @@ class OffersListAdapter(
     }
 
     fun removeLoadingFooter() {
-        isLoadingAdded = false
-        val position = arrayList!!.size - 1
-        val result: OfferModel = getItem(position)
-        if (result != null) {
-            arrayList.removeAt(position)
-            notifyItemRemoved(position)
+        if (isLoadingAdded) {
+
+            val position = arrayList!!.size - 1
+            val result: ProductModel = getItem(position)
+            if (result != null) {
+                arrayList.removeAt(position)
+                notifyItemRemoved(position)
+            }
         }
+        isLoadingAdded = false
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val model: OfferModel = arrayList!![position]
+    override fun onBindViewHolder(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {
+        val model: ProductModel = arrayList!![position]
         when (getItemViewType(position)) {
             ITEM -> {
                 val offerViewHolder =
                     holder as OfferViewHolder
 
+                offerViewHolder.cat_home_big_txt.text = model.name
+
                 Glide.with(context)
-                    .load(model.imgUrl)
+                    .load(model.image)
                     .into(offerViewHolder.im_offer)
 
 
                 offerViewHolder.lout_container!!.setOnClickListener {
                     customListener!!.onItemClickListner(
-                        model.id,
-                        model.title
+                        model
                     )
                 }
             }
             LOADING -> {
                 val loadingVH = holder as LoadingVH
                 val layoutParams =
-                    loadingVH.itemView.layoutParams as StaggeredGridLayoutManager.LayoutParams
+                    loadingVH.itemView.layoutParams as androidx.recyclerview.widget.StaggeredGridLayoutManager.LayoutParams
                 layoutParams.isFullSpan = true
                 if (retryPageLoad) {
                     holder.footerLayout.visibility = View.VISIBLE
@@ -127,8 +133,8 @@ class OffersListAdapter(
         }
     }
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        var viewHolder: RecyclerView.ViewHolder? = null
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
+        var viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder? = null
         val mInflater = LayoutInflater.from(viewGroup.context)
         when (viewType) {
             ITEM -> {
@@ -147,13 +153,14 @@ class OffersListAdapter(
     }
 
     inner class OfferViewHolder(itemView: View) :
-        RecyclerView.ViewHolder(itemView!!) {
+        androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView!!) {
         val im_offer by lazy { itemView.findViewById<ImageView>(R.id.im_offer) }
+        val cat_home_big_txt by lazy { itemView.findViewById<TextView>(R.id.cat_home_big_txt) }
         val lout_container by lazy { itemView.findViewById<LinearLayout>(R.id.lout_container) }
     }
 
     protected inner class LoadingVH(itemView: View) :
-        RecyclerView.ViewHolder(itemView!!) {
+        androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView!!) {
         val mProgressBar by lazy { itemView.findViewById<AVLoadingIndicatorView>(R.id.avi_loading_more) }
         val mRetryBtn by lazy { itemView.findViewById<LinearLayout>(R.id.btn_try_again) }
         val footerLayout by lazy { itemView.findViewById<LinearLayout>(R.id.loadmore_errorlayout) }
@@ -162,7 +169,7 @@ class OffersListAdapter(
     }
 
     interface customButtonListener {
-        fun onItemClickListner(id: String?, title: String?)
+        fun onItemClickListner(offer: ProductModel)
     }
 
     fun setCustomButtonListner(listener: customButtonListener?) {

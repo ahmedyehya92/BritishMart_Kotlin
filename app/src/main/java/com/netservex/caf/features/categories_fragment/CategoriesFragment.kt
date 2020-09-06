@@ -1,11 +1,11 @@
 package com.netservex.caf.features.categories_fragment
 
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.support.v7.widget.StaggeredGridLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -38,7 +38,7 @@ class CategoriesFragment : BaseFragment(), CategoriesView,
     }
     private lateinit var requestIntervalHandler: RequestIntervalHandler2
     private var newsAdapter: AdapterCategories? = null
-    var staggeredGridLayoutManager: StaggeredGridLayoutManager? = null
+    var staggeredGridLayoutManager: androidx.recyclerview.widget.StaggeredGridLayoutManager? = null
 
     private var arrayList: ArrayList<CategoryModel>? = null
     private var mHandler: Handler? = null
@@ -76,7 +76,10 @@ class CategoriesFragment : BaseFragment(), CategoriesView,
         requestIntervalHandler.setMessageErrorTextColor(R.color.colorredMain)
 
         staggeredGridLayoutManager =
-            StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL)
+            androidx.recyclerview.widget.StaggeredGridLayoutManager(
+                3,
+                androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL
+            )
         cat_home_list.setLayoutManager(staggeredGridLayoutManager)
         cat_home_list.setHasFixedSize(true)
         Log.d("", "onViewCreated: ")
@@ -92,7 +95,7 @@ class CategoriesFragment : BaseFragment(), CategoriesView,
         newsAdapter?.notifyDataSetChanged()
     }
 
-    override fun onItemNewsClickListner(title: String?, id: String?) {
+    override fun onItemCategoryClickListner(title: String?, id: String?) {
         activity?.getSupportFragmentManager()?.beginTransaction()?.add(R.id.main_fragment_container, SubCategoriesFragment.newInstance(id, title), "")?.addToBackStack(null)?.commit()
     }
 

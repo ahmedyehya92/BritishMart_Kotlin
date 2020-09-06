@@ -6,7 +6,7 @@ import android.util.AttributeSet
 import com.netservex.caf.R
 import com.netservex.caf.core.FontCache
 
-class CustomeFontTextView : android.support.v7.widget.AppCompatTextView {
+class CustomeFontTextView : androidx.appcompat.widget.AppCompatTextView {
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
 

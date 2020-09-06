@@ -1,7 +1,7 @@
 package com.netservex.caf.base
 
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.netservex.usecases.engine.toMutableLiveData
 import com.netservex.usecases.usecases.TokenUseCase
 

@@ -1,11 +1,11 @@
 package com.netservex.caf.features.offers
 
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.support.v7.widget.StaggeredGridLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +16,7 @@ import com.netservex.caf.core.RequestIntervalHandler2
 import com.netservex.caf.features.base.BaseFragment
 import com.netservex.caf.features.product_details.ProductDetailsFragment
 import com.netservex.entities.OfferModel
+import com.netservex.entities.ProductModel
 import com.netservex.entities.SUBCATEGORY_DATA_TYPE
 import kotlinx.android.synthetic.main.fragment_offers.*
 import java.util.ArrayList
@@ -32,7 +33,7 @@ class OffersListFragment : BaseFragment(), OffersListView,
     // limiting to 5 for this tutorial, since total pages in actual API is very large. Feel free to modify.
     val totalPageCount = 20
     private var currentPage = PAGE_START
-    private var arrayList: ArrayList<OfferModel>? = null
+    private var arrayList: ArrayList<ProductModel>? = null
     var handler: Handler? = null
     private val tryAgainTriggerObserever = Observer<Int> {
         when (it) {
@@ -58,7 +59,7 @@ class OffersListFragment : BaseFragment(), OffersListView,
         val rootView: View =
             inflater.inflate(R.layout.fragment_offers, container, false)
 
-        arrayList = ArrayList<OfferModel>()
+        arrayList = ArrayList<ProductModel>()
         return rootView
     }
 
@@ -90,7 +91,7 @@ class OffersListFragment : BaseFragment(), OffersListView,
 
     private fun implementScrolListener() {
         offers_list.addOnScrollListener(object :
-            PaginationStaggardScrollListener(offers_list.layoutManager as StaggeredGridLayoutManager) {
+            PaginationStaggardScrollListener(offers_list.layoutManager as androidx.recyclerview.widget.StaggeredGridLayoutManager) {
             //protected fun hideCatList() {}
 
 
@@ -108,7 +109,7 @@ class OffersListFragment : BaseFragment(), OffersListView,
         })
     }
 
-    override fun addOffers(offers: MutableList<OfferModel>) {
+    override fun addOffers(offers: MutableList<ProductModel>) {
         adapter!!.addAll(offers)
     }
 
@@ -155,8 +156,8 @@ class OffersListFragment : BaseFragment(), OffersListView,
     override fun faildLoading(message: Any) {
     }
 
-    override fun onItemClickListner(id: String?, title: String?) {
-        getFragmentManager()?.beginTransaction()?.add(R.id.main_fragment_container, ProductDetailsFragment(), "")?.addToBackStack("")?.commit()
+    override fun onItemClickListner(offer: ProductModel) {
+        getFragmentManager()?.beginTransaction()?.add(R.id.main_fragment_container, ProductDetailsFragment.newInstance(offer), "")?.addToBackStack("")?.commit()
     }
 
     override fun retryPageLoad() {

@@ -4,7 +4,7 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
+import androidx.fragment.app.DialogFragment
 import android.view.*
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -12,13 +12,15 @@ import android.widget.ListView
 import com.netservex.caf.R
 import com.netservex.caf.core.PassedDataFromCategoriesToMenu
 import com.netservex.caf.core.RxBus
+import com.netservex.caf.features.login.LoginFragment
 import com.netservex.entities.CategoryModel
+import com.netservex.usecases.usecases.TokenUseCase
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.fragment_menu_dialog_fragment_sec.*
 import java.util.*
 
-class MenueDialogFragment : DialogFragment(),
+class MenueDialogFragment : androidx.fragment.app.DialogFragment(),
     MenuListAdapter.CustomeListener {
 
     /*
@@ -109,6 +111,13 @@ class MenueDialogFragment : DialogFragment(),
         cartListAdapter = MenuListAdapter(context, menuItemsArrayList!!)
         cartListAdapter?.setCustomButtonListner(this)
         lv_menu_item!!.adapter = cartListAdapter
+        lout_login.setOnClickListener {
+            dismiss()
+            val tokenUseCase = TokenUseCase()
+            if(!tokenUseCase.isLoggedIn)
+                activity?.supportFragmentManager?.beginTransaction()?.add(R.id.main_fragment_container, LoginFragment(), "login_fragment")?.addToBackStack("")?.commit()
+        }
+
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

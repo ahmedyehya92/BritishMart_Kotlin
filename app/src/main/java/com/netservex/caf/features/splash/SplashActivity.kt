@@ -1,7 +1,7 @@
 package com.netservex.caf.features.splash
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.netservex.caf.R
 import com.netservex.caf.features.main.MainActivity
@@ -17,6 +17,7 @@ class SplashActivity : AppCompatActivity() {
         timer?.schedule(3000) {
             Intent(this@SplashActivity, MainActivity::class.java).apply {
                 startActivity(this)
+                finish()
             }
         }
     }

@@ -1,7 +1,7 @@
 package com.netservex.caf.customviews.custom_spinner
 
 import android.content.Context
-import android.support.v7.widget.AppCompatSpinner
+import androidx.appcompat.widget.AppCompatSpinner
 import android.util.AttributeSet
 import android.view.View
 import android.widget.AdapterView

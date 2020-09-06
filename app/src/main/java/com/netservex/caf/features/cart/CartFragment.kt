@@ -1,7 +1,9 @@
 package com.netservex.caf.features.cart
 
+import android.content.Intent
+import androidx.lifecycle.Observer
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -9,14 +11,18 @@ import android.view.ViewGroup
 import android.widget.ListView
 import android.widget.RelativeLayout
 import android.widget.TextView
+import android.widget.Toast
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.netservex.caf.R
+import com.netservex.caf.core.RequestIntervalHandler2
 import com.netservex.caf.features.base.BaseFragment
+import com.netservex.caf.features.checkout.CheckoutFragment
 import com.netservex.entities.CartItemModel
+import com.netservex.entities.KEY_NUMBER_OF_ITEMS
 import kotlinx.android.synthetic.main.fragment_cart_sec.*
 import kotlinx.android.synthetic.main.view_place_order.*
-import java.util.*
 
-class CartFragment : BaseFragment(), CartItemsAdapter.CustomeListener {
+class CartFragment : BaseFragment(), CartItemsAdapter.CustomeListener, CartView {
     /*   @BindView(R.id.btn_product)
     ImageView btnProd;
 
@@ -28,6 +34,17 @@ class CartFragment : BaseFragment(), CartItemsAdapter.CustomeListener {
 
     @BindView(R.id.btnPlaceOrder)
     ImageView btnPlaceOrder; */
+
+    private lateinit var requestIntervalHandler: RequestIntervalHandler2
+    private val tryAgainTriggerObserever = Observer<Int> {
+        when (it) {
+            1 -> presenter.getCartItems()
+        }
+    }
+
+    private val presenter: CartPresenter by lazy {
+        CartImplPresenter(this)
+    }
 
     var totalPrice: String? = null
     var cartItemsArrayList: MutableList<CartItemModel> =  ArrayList()
@@ -60,13 +77,22 @@ class CartFragment : BaseFragment(), CartItemsAdapter.CustomeListener {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
+        requestIntervalHandler =
+            RequestIntervalHandler2(lout_loading_interval_view_container, context!!, false)
+        requestIntervalHandler.tryAgainTrigger.observe(this, tryAgainTriggerObserever)
+        requestIntervalHandler.setMessageErrorTextColor(R.color.colorredMain)
+
+
         btn_place_order!!.setOnClickListener {
-            /*  fragmentManager!!.beginTransaction()
-                  .add(R.id.main_fragment_container, AddAddressFragment(), "").addToBackStack("")
-                  .commit()*/
+              fragmentManager!!.beginTransaction()
+                  .add(R.id.main_fragment_container, CheckoutFragment(), "").addToBackStack("")
+                  .commit()
+
         }
 
-        cartItemsArrayList = ArrayList<CartItemModel>()
+        presenter.getCartItems()
+
+   /*     cartItemsArrayList = ArrayList<CartItemModel>()
         cartItemsArrayList!!.add(
             CartItemModel(
                 "product",
@@ -133,27 +159,18 @@ class CartFragment : BaseFragment(), CartItemsAdapter.CustomeListener {
         cartListAdapter = CartItemsAdapter(cartItemsArrayList,context)
         cartListAdapter?.setCustomButtonListner(this)
         lv_cart_list!!.adapter = cartListAdapter
-        updateTotalPrice()
+        updateTotalPrice()*/
     }
 
     override fun onRemoveButtonClickListner(productId: String?, position: Int) {
-        cartListAdapter?.removeAtPosition(position)
-        cartListAdapter?.notifyItemRemoved(position)
-        cartListAdapter?.let {
-            if(it.isEmpty())
-            {
-                //showEmptyViewForList()
-            }
-
-        }
+        presenter.removeProductFromCart(position, productId!!.toInt())
     }
-    override fun onAmountEditListener(currentQuantity: Int?, position: Int) {
+    override fun onAmountEditListener(currentQuantity: Int, position: Int) {
         Log.d("", "onAmountEditListener: $currentQuantity")
+        Log.d("OnAmountEdit","currentQuantity = $currentQuantity")
+        presenter.editProductAmount(position, cartListAdapter!!.getItem(position).id!!.toInt(), currentQuantity)
 
-        cartListAdapter?.getItem(position)?.quantity = currentQuantity
-        cartListAdapter?.notifyItemChanged(position)
-
-        updateTotalPrice()
+        //updateTotalPrice()
     }
 
     override fun onItemClickListener(productId: String?) {
@@ -162,10 +179,11 @@ class CartFragment : BaseFragment(), CartItemsAdapter.CustomeListener {
             .commit()*/
     }
 
-    fun updateTotalPrice() {
-        var totalPrice = 0
-        for (i in cartItemsArrayList!!.indices) {
-            cartItemsArrayList!![i].priceForTotalQuantity?.let { totalPrice += it }
+    fun updateTotalPrice(cartItemsArrayList: MutableList<CartItemModel>) {
+        var totalPrice = 0.0
+        cartItemsArrayList.forEach {
+            Log.e("cartItemsArrayList", "total = ${it.quantity?.times(it.priceOfUnit)}")
+            totalPrice +=  it.quantity?.times(it.priceOfUnit)
         }
         tv_total_price!!.text = totalPrice.toString()
     }
@@ -203,5 +221,61 @@ class CartFragment : BaseFragment(), CartItemsAdapter.CustomeListener {
             fragment.arguments = args
             return fragment
         }
+    }
+
+    override fun addToItems(requests: MutableList<CartItemModel>) {
+        cartListAdapter = CartItemsAdapter(requests,context)
+        cartListAdapter?.setCustomButtonListner(this)
+        lv_cart_list!!.adapter = cartListAdapter
+        updateTotalPrice(cartListAdapter!!.getItems())
+    }
+
+    override fun successfulEditAmount(position: Int, quantity: Int) {
+        cartListAdapter?.getItem(position)?.quantity = quantity
+        cartListAdapter?.notifyItemChanged(position)
+        updateTotalPrice(cartListAdapter!!.getItems())
+    }
+
+    override fun failedEditAmount(message: String?) {
+        Toast.makeText(context,"Connection error, Try Again!", Toast.LENGTH_LONG).show()
+    }
+
+    override fun successfulRemoveProduct(position: Int) {
+        val intent: Intent = Intent("cartChanged")
+        intent.putExtra(
+            KEY_NUMBER_OF_ITEMS,
+            cartListAdapter!!.itemCount-1
+        )
+        LocalBroadcastManager.getInstance(activity!!).sendBroadcast(intent)
+
+        cartListAdapter?.removeAtPosition(position)
+        cartListAdapter?.notifyItemRemoved(position)
+        cartListAdapter?.let {
+            if(it.isEmpty())
+            {
+                //showEmptyViewForList()
+            }
+
+        }
+        updateTotalPrice(cartListAdapter!!.getItems())
+    }
+
+    override fun failedRemoveProduct(message: String?) {
+        Toast.makeText(context,"Connection error, Try Again!", Toast.LENGTH_LONG).show()
+    }
+
+    override fun showLoading() {
+        requestIntervalHandler.showLoadingView()
+    }
+
+    override fun finishLoading() {
+        requestIntervalHandler.finishLoading()
+    }
+
+    override fun connectionError(message: String?) {
+        requestIntervalHandler.showErrorView(message)
+    }
+
+    override fun faildLoading(message: Any) {
     }
 }

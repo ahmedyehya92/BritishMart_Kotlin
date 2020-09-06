@@ -1,6 +1,6 @@
 package com.netservex.caf.features.categories_fragment
 
-import android.arch.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.DefaultLifecycleObserver
 import android.content.Context
 import com.netservex.entities.CategoryModel
 import java.util.*

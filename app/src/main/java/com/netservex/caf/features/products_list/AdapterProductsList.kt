@@ -2,8 +2,8 @@ package com.netservex.caf.features.products_list
 
 import android.content.Context
 import android.os.Handler
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.StaggeredGridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +22,7 @@ class AdapterProductsList(
     private val context: Context,
     arrayList: ArrayList<ProductModel>?, dataType: Int
 ) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder?>() {
+    androidx.recyclerview.widget.RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder?>() {
     private val arrayList: MutableList<ProductModel>?
     private val dataType: Int
     private var customListener: customButtonListener? = null
@@ -78,16 +78,19 @@ class AdapterProductsList(
     }
 
     fun removeLoadingFooter() {
-        isLoadingAdded = false
-        val position = arrayList!!.size - 1
-        val result: ProductModel = getItem(position)
-        if (result != null) {
-            arrayList.removeAt(position)
-            notifyItemRemoved(position)
+        if (isLoadingAdded) {
+
+            val position = arrayList!!.size - 1
+            val result: ProductModel = getItem(position)
+            if (result != null) {
+                arrayList.removeAt(position)
+                notifyItemRemoved(position)
+            }
         }
+        isLoadingAdded = false
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {
         val model: ProductModel = arrayList!![position]
         when (getItemViewType(position)) {
             ITEM -> {
@@ -101,15 +104,14 @@ class AdapterProductsList(
                 subCategoryViewHolder.tv_title?.text = model.name
                 subCategoryViewHolder.lout_container!!.setOnClickListener {
                     customListener!!.onItemClickListner(
-                        model.id,
-                        model.name
+                        model
                     )
                 }
             }
             LOADING -> {
                 val loadingVH = holder as LoadingVH
                 val layoutParams =
-                    loadingVH.itemView.layoutParams as StaggeredGridLayoutManager.LayoutParams
+                    loadingVH.itemView.layoutParams as androidx.recyclerview.widget.StaggeredGridLayoutManager.LayoutParams
                 layoutParams.isFullSpan = true
                 if (retryPageLoad) {
                     holder.footerLayout.visibility = View.VISIBLE
@@ -128,8 +130,8 @@ class AdapterProductsList(
         }
     }
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        var viewHolder: RecyclerView.ViewHolder? = null
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
+        var viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder? = null
         val mInflater = LayoutInflater.from(viewGroup.context)
         when (viewType) {
             ITEM -> {
@@ -148,7 +150,7 @@ class AdapterProductsList(
     }
 
     inner class SubCategoryViewHolder(itemView: View) :
-        RecyclerView.ViewHolder(itemView!!) {
+        androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView!!) {
 
         val img_desc by lazy { itemView.findViewById<ImageView>(R.id.cat_home_big_img) }
         val tv_title by lazy { itemView.findViewById<TextView>(R.id.cat_home_big_txt) }
@@ -156,7 +158,7 @@ class AdapterProductsList(
     }
 
     protected inner class LoadingVH(itemView: View) :
-        RecyclerView.ViewHolder(itemView!!) {
+        androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView!!) {
         val mProgressBar by lazy { itemView.findViewById<AVLoadingIndicatorView>(R.id.avi_loading_more) }
         val mRetryBtn by lazy { itemView.findViewById<LinearLayout>(R.id.btn_try_again) }
         val footerLayout by lazy { itemView.findViewById<LinearLayout>(R.id.loadmore_errorlayout) }
@@ -165,7 +167,7 @@ class AdapterProductsList(
     }
 
     interface customButtonListener {
-        fun onItemClickListner(id: String?, title: String?)
+        fun onItemClickListner(productModel: ProductModel)
     }
 
     fun setCustomButtonListner(listener: customButtonListener?) {

@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: com.myfatoorah:myfatoorah:2.0.19@aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d7534cc578ed7afa1a88e9ee6c7e2660/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d7534cc578ed7afa1a88e9ee6c7e2660/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d7534cc578ed7afa1a88e9ee6c7e2660/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.myfatoorah/myfatoorah/2.0.19/b111996e38890906cba4dd93fae83b62eeeedad8/myfatoorah-2.0.19-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

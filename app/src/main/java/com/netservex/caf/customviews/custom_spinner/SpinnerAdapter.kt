@@ -1,10 +1,10 @@
 package com.netservex.caf.customviews.custom_spinner
 
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import android.content.Context
-import android.support.annotation.StringRes
+import androidx.annotation.StringRes
 import android.util.Log
 
 open class SpinnerAdapter<T> (

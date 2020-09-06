@@ -1,8 +1,8 @@
 package com.netservex.caf.features.categories_fragment
 
-import android.arch.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleOwner
 import android.graphics.BitmapFactory
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.netservex.caf.R
 import com.netservex.entities.CategoryModel
 import com.netservex.usecases.usecases.GetCategoriesUseCase

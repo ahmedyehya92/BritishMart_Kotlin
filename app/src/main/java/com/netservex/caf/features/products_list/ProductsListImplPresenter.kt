@@ -1,6 +1,6 @@
 package com.netservex.caf.features.products_list
 
-import android.arch.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleOwner
 import android.util.Log
 import com.netservex.entities.ProductModel
 import com.netservex.usecases.usecases.GetProductsOfCategoryUseCase

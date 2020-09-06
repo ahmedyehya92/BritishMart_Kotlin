@@ -1,21 +1,39 @@
 package com.netservex.caf.features.login
 
+import androidx.lifecycle.Observer
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.RelativeLayout
 import android.widget.TextView
+import android.widget.Toast
 import com.netservex.caf.R
+import com.netservex.caf.core.RequestIntervalHandler2
+import com.netservex.caf.core.isPasswordValid
+import com.netservex.caf.core.isValidEmail
+import com.netservex.caf.core.textValue
+import com.netservex.caf.features.base.BaseFragment
 import com.netservex.caf.features.cart.CartFragment
+import com.netservex.caf.features.forget_password.ForgetPasswordFragment
+import com.netservex.caf.features.register.RegisterFragment
 import kotlinx.android.synthetic.main.fragment_login_sec.*
 
-class LoginFragment : Fragment() {
+class LoginFragment : BaseFragment(), LoginView {
     // TODO: Rename and change types of parameters
     private var mParam1: String? = null
     private var mParam2: String? = null
+    private var requestIntervalHandler: RequestIntervalHandler2? = null
+    private val tryAgainTriggerObserever = Observer<Int> {
+        when (it) {
+            //  1 -> categoryId?.let { presenter?.getSubCategories(currentPage, it) }
+        }
+    }
+    private val presenter: LoginPresenter by lazy {
+        LoginImplPresenter(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,25 +55,39 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
+
         btn_login!!.setOnClickListener {
-            fragmentManager!!.beginTransaction()
+
+            if(et_email.isValidEmail() && et_password.isPasswordValid())
+                presenter.login(et_email.textValue(), et_password.textValue())
+
+           /* fragmentManager!!.beginTransaction()
                 .add(R.id.main_fragment_container, CartFragment(), "cart_fragment")
-                .addToBackStack(null).commit()
+                .addToBackStack(null).commit()*/
         }
+
+
         new_account!!.setOnClickListener {
-            /*fragmentManager!!.beginTransaction()
+            fragmentManager!!.beginTransaction()
                 .add(R.id.main_fragment_container, RegisterFragment(), "register_fragment")
-                .addToBackStack("").commit()*/
+                .addToBackStack("").commit()
         }
         btn_forget_password!!.setOnClickListener {
-            /* fragmentManager!!.beginTransaction().add(
+             fragmentManager!!.beginTransaction().add(
                  R.id.main_fragment_container,
                  ForgetPasswordFragment(),
                  "forget_password_fragment"
-             ).addToBackStack("").commit()*/
+             ).addToBackStack("").commit()
         }
-        dummy_click!!.isSoundEffectsEnabled = false
-        dummy_click!!.setOnClickListener { }
+        //dummy_click!!.isSoundEffectsEnabled = false
+        //dummy_click!!.setOnClickListener { }
+
+        requestIntervalHandler =
+            RequestIntervalHandler2(lout_loading_interval_view_container, context!!, false)
+        requestIntervalHandler?.tryAgainTrigger?.observe(this, tryAgainTriggerObserever)
+        requestIntervalHandler?.setMessageErrorTextColor(R.color.colorredMain)
 
     }
 
@@ -81,5 +113,29 @@ class LoginFragment : Fragment() {
             fragment.arguments = args
             return fragment
         }
+    }
+
+    override fun successfulLogin() {
+        Toast.makeText(context,"Congratulations! Successful login", Toast.LENGTH_LONG).show()
+        activity?.onBackPressed()
+    }
+
+    override fun failedLogin() {
+    }
+
+    override fun showLoading() {
+        requestIntervalHandler?.showLoadingView()
+    }
+
+    override fun finishLoading() {
+        requestIntervalHandler?.finishLoading()
+    }
+
+    override fun connectionError(message: String?) {
+        finishLoading()
+        Toast.makeText(context,message?:"Unknown error", Toast.LENGTH_LONG).show()
+    }
+
+    override fun faildLoading(message: Any) {
     }
 }

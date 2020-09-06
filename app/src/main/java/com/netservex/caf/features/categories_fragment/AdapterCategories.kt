@@ -1,11 +1,11 @@
 package com.netservex.caf.features.categories_fragment
 
 import android.content.Context
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.bumptech.glide.Glide
@@ -17,18 +17,18 @@ class AdapterCategories(
     private val context: Context,
     private val arrayList: ArrayList<CategoryModel>
 ) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder?>() {
+    androidx.recyclerview.widget.RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder?>() {
     private var customListener: CustomButtonListener? = null
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        var viewHolder: RecyclerView.ViewHolder? = null
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
+        var viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder? = null
         val inflater = LayoutInflater.from(parent.context)
         val viewItem: View =
-            inflater.inflate(R.layout.view_category_item, parent, false)
+            inflater.inflate(R.layout.view_category_header_item, parent, false)
         viewHolder = CategoriesViewHolder(viewItem)
         return viewHolder
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {
         val categoryModel: CategoryModel = arrayList!![position]
         val categoriesViewHolder =
             holder as CategoriesViewHolder
@@ -41,7 +41,7 @@ class AdapterCategories(
         }
         categoriesViewHolder.img_desc!!.setImageBitmap(categoryModel.im)
         categoriesViewHolder.lout_container!!.setOnClickListener {
-            customListener!!.onItemNewsClickListner(
+            customListener!!.onItemCategoryClickListner(
                 categoryModel.name,
                 categoryModel.id
             )
@@ -62,7 +62,7 @@ class AdapterCategories(
     }
 
     inner class CategoriesViewHolder(itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
+        androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
 
         val img_desc by lazy { itemView.findViewById<ImageView>(R.id.img_desc) }
 
@@ -70,12 +70,12 @@ class AdapterCategories(
 
         val tv_title by lazy { itemView.findViewById<TextView>(R.id.tv_title) }
 
-        val lout_container by lazy { itemView.findViewById<RelativeLayout>(R.id.lout_container) }
+        val lout_container by lazy { itemView.findViewById<LinearLayout>(R.id.lout_container) }
 
     }
 
     interface CustomButtonListener {
-        fun onItemNewsClickListner(title: String?, id: String?)
+        fun onItemCategoryClickListner(title: String?, id: String?)
     }
 
     fun setCustomButtonListner(listener: CustomButtonListener?) {

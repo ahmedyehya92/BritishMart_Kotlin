@@ -3,7 +3,7 @@ package com.netservex.caf.base
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.os.PersistableBundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 
 open class BaseActivity : AppCompatActivity()
 {

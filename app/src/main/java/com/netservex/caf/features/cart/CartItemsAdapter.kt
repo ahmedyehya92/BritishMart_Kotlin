@@ -1,8 +1,8 @@
 package com.netservex.caf.features.cart
 
 import android.content.Context
-import android.support.constraint.ConstraintLayout
-import android.support.v7.widget.RecyclerView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +11,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.netservex.caf.R
 import com.netservex.caf.core.PaginationAdapterCallBack
 import com.netservex.entities.CartItemModel
@@ -25,7 +24,7 @@ class CartItemsAdapter (
     private var isLoadingAdded: Boolean = false,
     var retryPageLoad: Boolean = false,
     private var mCallback: PaginationAdapterCallBack? = null
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : androidx.recyclerview.widget.RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder>() {
 
     private var customeListener: CustomeListener? = null
 
@@ -35,9 +34,11 @@ class CartItemsAdapter (
         return if (position == cartItemsList.size - 1 && isLoadingAdded) LOADING else ITEM
     }
 
+    fun getItems() = cartItemsList
 
 
-    override fun onCreateViewHolder(p0: ViewGroup, p1: Int): RecyclerView.ViewHolder {
+
+    override fun onCreateViewHolder(p0: ViewGroup, p1: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
         val mInflater = LayoutInflater.from(p0.context)
 
         when (p1) {
@@ -66,12 +67,12 @@ class CartItemsAdapter (
     }
 
 
-    override fun onBindViewHolder(p0: RecyclerView.ViewHolder, p1: Int) {
+    override fun onBindViewHolder(p0: androidx.recyclerview.widget.RecyclerView.ViewHolder, p1: Int) {
         val cartItem: CartItemModel = cartItemsList[p1]
         if (getItemViewType(p1) == ITEM) {
             val itemViewHolder = p0 as CartItemsListItemViewHolder
 
-            itemViewHolder.tvProductName.setText(cartItem.productName)
+            itemViewHolder.tvProductName.setText(cartItem.name)
             itemViewHolder.tvQuntity.setText(java.lang.String.valueOf(cartItem.quantity))
             itemViewHolder.btnDecreaseQuantity.setOnClickListener(View.OnClickListener {
                 if (cartItemsList.get(p1).quantity !== 1) {
@@ -100,16 +101,16 @@ class CartItemsAdapter (
                 )
             })
 
-            if (!(cartItem.ImageUrl == null || cartItem.ImageUrl.equals(""))) {
+            if (!(cartItem.image == null || cartItem.image.equals(""))) {
                 Glide.with(context)
-                    .load(cartItem.ImageUrl)
+                    .load(cartItem.image)
                     .into(itemViewHolder.imvDescription)
             } else { /* Glide.with(context)
                     .load(R.drawable.placeholder).diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(viewHolder.imvDescription);*/
             }
 
-            cartItem.priceForUnit?.let { cartItem.priceForTotalQuantity =  cartItem.quantity?.times(it)   }
+            cartItem.priceOfUnit?.let { cartItem.priceForTotalQuantity =  cartItem.quantity?.times(it)   }
 
             itemViewHolder.tvTotalQuantityPrice.text = cartItem.priceForTotalQuantity.toString()
 
@@ -151,7 +152,7 @@ class CartItemsAdapter (
 
     interface CustomeListener {
         fun onRemoveButtonClickListner(productId: String?, position: Int)
-        fun onAmountEditListener(currentQuantity: Int?, position: Int)
+        fun onAmountEditListener(currentQuantity: Int, position: Int)
         fun onItemClickListener(productId: String?)
     }
 
@@ -159,7 +160,7 @@ class CartItemsAdapter (
         this.customeListener = listener
     }
 
-    class ListLoadingFooterViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+    class ListLoadingFooterViewHolder(private val view: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
 
         val mProgressBar by lazy { view.findViewById<AVLoadingIndicatorView>(R.id.avi_loading_more) }
 
@@ -169,7 +170,7 @@ class CartItemsAdapter (
 
     }
 
-    class CartItemsListItemViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+    class CartItemsListItemViewHolder(private val view: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {
         val imvDescription by lazy { view.findViewById<ImageView>(R.id.imageView3) }
         val loutContainer by lazy { view.findViewById<ConstraintLayout>(R.id.lout_cont) }
         val tvProductName by lazy { view.findViewById<TextView>(R.id.tv_product_name) }

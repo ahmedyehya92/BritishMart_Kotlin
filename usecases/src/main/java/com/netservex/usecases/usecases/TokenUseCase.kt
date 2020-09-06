@@ -10,6 +10,8 @@ class TokenUseCase
 
     fun getTokenInterceptor(refreshToken: String) = repository.getTokenHeader(refreshToken)
 
+    fun getTokenInterceptor(email: String, password: String) = repository.getTokenHeader(email, password)
+
 
     var isLoggedIn: Boolean
         get() = repository.getLoggedInStatus()

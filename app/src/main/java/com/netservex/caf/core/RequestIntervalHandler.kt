@@ -1,6 +1,6 @@
 package com.netservex.caf.core
 
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 import android.content.Context
 import android.media.MediaPlayer
 import android.view.LayoutInflater

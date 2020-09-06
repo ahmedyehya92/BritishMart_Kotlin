@@ -1,6 +1,6 @@
 package com.netservex.caf.features.subcategories
 
-import android.arch.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleOwner
 import android.util.Log
 import com.netservex.entities.CategoryModel
 import com.netservex.usecases.usecases.GetSubCategoriesUseCase

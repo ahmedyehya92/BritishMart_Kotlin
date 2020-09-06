@@ -2,8 +2,8 @@ package com.netservex.caf.features.subcategories
 
 import android.content.Context
 import android.os.Handler
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.StaggeredGridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +20,7 @@ class SubcategoriesAdapter(
     private val context: Context,
     arrayList: ArrayList<SubCategoryModel>?, dataType: Int
 ) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder?>() {
+    androidx.recyclerview.widget.RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder?>() {
     private val arrayList: MutableList<SubCategoryModel>?
     private val dataType: Int
     private var customListener: customButtonListener? = null
@@ -76,16 +76,18 @@ class SubcategoriesAdapter(
     }
 
     fun removeLoadingFooter() {
-        isLoadingAdded = false
-        val position = arrayList!!.size - 1
-        val result: SubCategoryModel = getItem(position)
-        if (result != null) {
-            arrayList.removeAt(position)
-            notifyItemRemoved(position)
+        if (isLoadingAdded) {
+            val position = arrayList!!.size - 1
+            val result: SubCategoryModel = getItem(position)
+            if (result != null) {
+                arrayList.removeAt(position)
+                notifyItemRemoved(position)
+            }
         }
+        isLoadingAdded = false
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {
         val model: SubCategoryModel = arrayList!![position]
         when (getItemViewType(position)) {
             ITEM -> {
@@ -107,7 +109,7 @@ class SubcategoriesAdapter(
             LOADING -> {
                 val loadingVH = holder as LoadingVH
                 val layoutParams =
-                    loadingVH.itemView.layoutParams as StaggeredGridLayoutManager.LayoutParams
+                    loadingVH.itemView.layoutParams as androidx.recyclerview.widget.StaggeredGridLayoutManager.LayoutParams
                 layoutParams.isFullSpan = true
                 if (retryPageLoad) {
                     holder.footerLayout.visibility = View.VISIBLE
@@ -126,8 +128,8 @@ class SubcategoriesAdapter(
         }
     }
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        var viewHolder: RecyclerView.ViewHolder? = null
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
+        var viewHolder: androidx.recyclerview.widget.RecyclerView.ViewHolder? = null
         val mInflater = LayoutInflater.from(viewGroup.context)
         when (viewType) {
             ITEM -> {
@@ -146,7 +148,7 @@ class SubcategoriesAdapter(
     }
 
     inner class SubCategoryViewHolder(itemView: View) :
-        RecyclerView.ViewHolder(itemView!!) {
+        androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView!!) {
 
         val img_desc by lazy { itemView.findViewById<ImageView>(R.id.cat_home_big_img) }
         val tv_title by lazy { itemView.findViewById<TextView>(R.id.cat_home_big_txt) }
@@ -154,7 +156,7 @@ class SubcategoriesAdapter(
     }
 
     protected inner class LoadingVH(itemView: View) :
-        RecyclerView.ViewHolder(itemView!!) {
+        androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView!!) {
         val mProgressBar by lazy { itemView.findViewById<AVLoadingIndicatorView>(R.id.avi_loading_more) }
         val mRetryBtn by lazy { itemView.findViewById<LinearLayout>(R.id.btn_try_again) }
         val footerLayout by lazy { itemView.findViewById<LinearLayout>(R.id.loadmore_errorlayout) }

@@ -1,9 +1,9 @@
 package com.netservex.caf.core
 
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 import android.content.Context
 import android.media.MediaPlayer
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -60,6 +60,10 @@ class RequestIntervalHandler2(
         viewGroup.addView(relativeLayout)
 
         viewHolder = ViewHolder(viewGroup)
+
+       /* viewHolder!!.loutMain.setOnClickListener {
+
+        }*/
 
         viewHolder!!.btnTryAgain!!.setOnClickListener { tryAgainTrigger.postValue(1) }
 

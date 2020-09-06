@@ -1,7 +1,7 @@
 package com.netservex.usecases.database
 
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Query
+import androidx.room.Dao
+import androidx.room.Query
 import com.netservex.entities.SeatDB
 
 @Dao

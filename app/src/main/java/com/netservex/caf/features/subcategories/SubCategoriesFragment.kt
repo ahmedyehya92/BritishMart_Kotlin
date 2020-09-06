@@ -1,12 +1,12 @@
 package com.netservex.caf.features.subcategories
 
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.StaggeredGridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -27,12 +27,12 @@ class SubCategoriesFragment : BaseFragment(), SubCategoriesView,
     private var categoryId: String? = null
     private var categoryName: String? = null
     var adapter: SubcategoriesAdapter? = null
-    var staggeredGridLayoutManager: StaggeredGridLayoutManager? = null
+    var staggeredGridLayoutManager: androidx.recyclerview.widget.StaggeredGridLayoutManager? = null
     private var isLoadingV: Boolean = false
     private var isLastPageV: Boolean = false
     private var TOTAL_PAGES: Int = 50
     private val TAG = this::class.java.simpleName
-    var linearLayoutManager: LinearLayoutManager? = null
+    var linearLayoutManager: androidx.recyclerview.widget.LinearLayoutManager? = null
     // limiting to 5 for this tutorial, since total pages in actual API is very large. Feel free to modify.
     val totalPageCount = 20
     private var currentPage = PAGE_START
@@ -79,13 +79,21 @@ class SubCategoriesFragment : BaseFragment(), SubCategoriesView,
         requestIntervalHandler.setMessageErrorTextColor(R.color.colorredMain)
 
         tv_category_name.text = categoryName
+        Log.e("cat", "category name = $categoryName")
 
-        linearLayoutManager = LinearLayoutManager(getContext())
+        linearLayoutManager =
+            androidx.recyclerview.widget.LinearLayoutManager(getContext())
         staggeredGridLayoutManager =
-            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+            androidx.recyclerview.widget.StaggeredGridLayoutManager(
+                2,
+                androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL
+            )
         im_list_icon.setOnClickListener {
             staggeredGridLayoutManager =
-                StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL)
+                androidx.recyclerview.widget.StaggeredGridLayoutManager(
+                    1,
+                    androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL
+                )
             sub_cat_home_list.setLayoutManager(staggeredGridLayoutManager)
             //adapter!!.notifyDataSetChanged()
             im_list_icon.setImageResource(R.drawable.icon_list_selected)
@@ -93,7 +101,10 @@ class SubCategoriesFragment : BaseFragment(), SubCategoriesView,
         }
         im_grid_icon.setOnClickListener {
             staggeredGridLayoutManager =
-                StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+                androidx.recyclerview.widget.StaggeredGridLayoutManager(
+                    2,
+                    androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL
+                )
             sub_cat_home_list.setLayoutManager(staggeredGridLayoutManager)
             //adapter!!.notifyDataSetChanged()
             im_grid_icon.setImageResource(R.drawable.icon_grid_selected)
@@ -190,7 +201,7 @@ class SubCategoriesFragment : BaseFragment(), SubCategoriesView,
     }
 
     override fun onItemClickListner(id: String?, title: String?) {
-        getFragmentManager()?.beginTransaction()?.add(R.id.main_fragment_container, FragmentProductsList.newInstance(id), "")?.addToBackStack("")?.commit()
+        getFragmentManager()?.beginTransaction()?.add(R.id.main_fragment_container, FragmentProductsList.newInstance(id, title                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          ), "title")?.addToBackStack("")?.commit()
     }
 
     override fun retryPageLoad() {
